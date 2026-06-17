@@ -874,59 +874,55 @@ function App() {
           </div>
         </div>
         <div className="command-input-wrap">
-          <input
-            id="command"
-            ref={commandInputRef}
-            className="command-input"
-            value={command}
-            onChange={(event) => {
-              setCommand(event.target.value)
-              updateCommandCursor(event.target.selectionStart)
-            }}
-            onFocus={() => {
-              setIsCommandFocused(true)
-              updateCommandCursor(commandInputRef.current?.selectionStart)
-            }}
-            onClick={(event) => updateCommandCursor(event.currentTarget.selectionStart)}
-            onKeyUp={(event) => updateCommandCursor(event.currentTarget.selectionStart)}
-            onSelect={(event) => updateCommandCursor(event.currentTarget.selectionStart)}
-            onKeyDown={(event) => {
-              if (!showCommandCompletions) {
-                return
-              }
+<textarea
+  id="command"
+  ref={commandInputRef}
+  className="command-input"
+  value={command}
+  onChange={(event) => {
+    setCommand(event.target.value)
+    updateCommandCursor(event.target.selectionStart)
+  }}
+  onFocus={() => {
+    setIsCommandFocused(true)
+    updateCommandCursor(commandInputRef.current?.selectionStart)
+  }}
+  onClick={(event) => updateCommandCursor(event.currentTarget.selectionStart)}
+  onKeyUp={(event) => updateCommandCursor(event.currentTarget.selectionStart)}
+  onSelect={(event) => updateCommandCursor(event.currentTarget.selectionStart)}
+  onKeyDown={(event) => {
+    if (!showCommandCompletions) return
 
-              if (event.key === 'ArrowDown') {
-                event.preventDefault()
-                setActiveCompletionIndex((prev) => {
-                  const currentIndex = Math.min(prev, commandCompletions.length - 1)
-                  return (currentIndex + 1) % commandCompletions.length
-                })
-                return
-              }
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setActiveCompletionIndex((prev) =>
+        (prev + 1) % commandCompletions.length
+      )
+      return
+    }
 
-              if (event.key === 'ArrowUp') {
-                event.preventDefault()
-                setActiveCompletionIndex((prev) => {
-                  const currentIndex = Math.min(prev, commandCompletions.length - 1)
-                  return currentIndex === 0 ? commandCompletions.length - 1 : currentIndex - 1
-                })
-                return
-              }
+    if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      setActiveCompletionIndex((prev) =>
+        prev === 0 ? commandCompletions.length - 1 : prev - 1
+      )
+      return
+    }
 
-              if (event.key === 'Enter' || event.key === 'Tab') {
-                event.preventDefault()
-                applyCommandCompletion(commandCompletions[boundedActiveCompletionIndex])
-                return
-              }
+    if (event.key === 'Enter' || event.key === 'Tab') {
+      event.preventDefault()
+      applyCommandCompletion(commandCompletions[boundedActiveCompletionIndex])
+      return
+    }
 
-              if (event.key === 'Escape') {
-                event.preventDefault()
-                setIsCommandFocused(false)
-              }
-            }}
-            placeholder="execute ~"
-            spellCheck={false}
-          />
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      setIsCommandFocused(false)
+    }
+  }}
+  placeholder="execute ~"
+  spellCheck={false}
+/>
           {showCommandCompletions && (
             <div className="command-completion-list" role="listbox" aria-label="Command completions">
               {commandCompletions.map((completion, index) => (
@@ -1117,7 +1113,6 @@ function App() {
 }
 
 export default App
-
 
 
 
